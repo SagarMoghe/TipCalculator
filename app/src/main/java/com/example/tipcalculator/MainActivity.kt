@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.round
 
 class MainActivity : AppCompatActivity() {
     var toggle = true
@@ -24,6 +25,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun calculate(){
+        if(et_amount.text.toString()==""){
+            et_amount.text="0"
+        }
+        if(et_split.text.toString()==""){
+            et_split.text="1"
+        }
+
         var amount = et_amount.text.toString().toFloat()
         var tip = tv_precent.text.toString().substring(0,tv_precent.text.length-1).toFloat()
         var split_between = et_split.text.toString().toInt()
@@ -32,6 +40,12 @@ class MainActivity : AppCompatActivity() {
         }
         var tip_value = ((amount*tip)/100)/ split_between
         var total = (amount + tip_value) / split_between
+        tip_value = 100*tip_value
+        tip_value = round(tip_value)
+        tip_value /= 100
+        total = 100*total
+        total = round(total)
+        total /= 100
         tv_tip.text = tip_value.toString()
         tv_total.text = total.toString()
     }
@@ -41,8 +55,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        et_amount.setOnClickListener {set_Toggle(true)}
-        et_split.setOnClickListener {set_Toggle(false)}
+        et_amount.setOnClickListener { set_Toggle(true) }
+        et_split.setOnClickListener { set_Toggle(false)
+        }
         textViewClear.setOnClickListener {
             et_amount.text = ""
             et_split.text = "1"
