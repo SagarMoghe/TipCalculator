@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:background="@android:color/black"
     android:layout_height="match_parent">
-
+    <!--App page is divided into 2 major layouts.
+    Upper half porting is in grid layout, and bottom half portion is
+    vertical layout.Vertical layout is further divided into 5 horizontal layouts.
+    Grid layout contains the textViews from Amount to Total.
+    Vertical layout consists of all the buttons of the apps from Clear to Backspace.
+    Everything is enclosed into constraint layout.
+    -->
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
@@ -59,7 +65,7 @@
             android:background="#faca7a"
             android:textSize="16sp"
             android:text="1"
-            android:hint="1"
+            android:hint="Number to split between"
             android:padding="12dp" />
 
         <TextView
@@ -78,7 +84,7 @@
             android:layout_columnSpan="3"
             android:layout_gravity="fill_horizontal"
             android:layout_margin="12dp"
-            android:max="100"
+            android:max="25"
             android:progress="15" />
 
         <TextView

@@ -7,10 +7,13 @@ import android.widget.SeekBar
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.round
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
+    //toggle variable is set to choose which textView is to be updated.
     var toggle = true
-
+    //this function appends the typed string to the appropriate textView depending
+    // on the value of the toggle variable
     fun appendExpression(string: String){
         if (toggle) {
             et_amount.append(string)
@@ -19,22 +22,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //reset the toggle value to true or false
     fun set_Toggle(tog: Boolean){
         toggle = tog
-
     }
-
+    //Once the calculate function is called strings in Amount and split text box will be converted into
+    //numbers and Tip and Total value will be further calculated
+    @RequiresApi(Build.VERSION_CODES.N)
     fun calculate(){
+        // if either of the two text boxes are left empty, default values will be added
         if(et_amount.text.toString()==""){
             et_amount.text="0"
         }
         if(et_split.text.toString()==""){
             et_split.text="1"
         }
+        var amount: Float
+        var split_between: Int
+        //In case of any error from the user inputting the string, all values will be cleared and
+        //user will have to enter everything again.
+        try{
+             amount = et_amount.text.toString().toFloat()
+             split_between = et_split.text.toString().toInt()
+        }catch(e: Exception) {
+            clear()
+            return
+        }
 
-        var amount = et_amount.text.toString().toFloat()
         var tip = tv_precent.text.toString().substring(0,tv_precent.text.length-1).toFloat()
-        var split_between = et_split.text.toString().toInt()
+
         if(split_between==0){
             split_between = 1
         }
@@ -49,6 +65,17 @@ class MainActivity : AppCompatActivity() {
         tv_tip.text = tip_value.toString()
         tv_total.text = total.toString()
     }
+    //To reset all values in the application
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun clear(){
+        et_amount.text = ""
+        et_split.text = "1"
+        tv_precent.text = "15%"
+        tv_tip.text = "0.00"
+        tv_total.text = "0.00"
+        sb_percent.setProgress(15,true)
+        textViewdot.isClickable = true
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -58,15 +85,7 @@ class MainActivity : AppCompatActivity() {
         et_amount.setOnClickListener { set_Toggle(true) }
         et_split.setOnClickListener { set_Toggle(false)
         }
-        textViewClear.setOnClickListener {
-            et_amount.text = ""
-            et_split.text = "1"
-            tv_precent.text = "15%"
-            tv_tip.text = "0.00"
-            tv_total.text = "0.00"
-            sb_percent.setProgress(15,true)
-
-        }
+        textViewClear.setOnClickListener {clear()}
         sb_percent.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(sb_percent: SeekBar, i: Int, b: Boolean) {
                 tv_precent.text =  "$i%"
@@ -80,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                  //To change body of created functions use File | Settings | File Templates.
             }
         })
+        //On click functions of all the buttons
         textView1.setOnClickListener{appendExpression("1")}
         textView2.setOnClickListener{appendExpression("2")}
         textView3.setOnClickListener{appendExpression("3")}
@@ -90,8 +110,14 @@ class MainActivity : AppCompatActivity() {
         textView8.setOnClickListener{appendExpression("8")}
         textView9.setOnClickListener{appendExpression("9")}
         textView0.setOnClickListener{appendExpression("0")}
-        textViewdot.setOnClickListener{appendExpression(".")}
+        //Does not allow user to enter 2 decimals in one number
+        textViewdot.setOnClickListener{
+            if(!et_amount.text.contains(".")){
+                appendExpression(".") }
+        }
+
         textViewback.setOnClickListener{
+
             if(toggle){
                 val string = et_amount.text.toString()
                 if(string.isNotEmpty()){
