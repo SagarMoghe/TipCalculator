@@ -14,11 +14,22 @@ class MainActivity : AppCompatActivity() {
     var toggle = true
     //this function appends the typed string to the appropriate textView depending
     // on the value of the toggle variable
+    @RequiresApi(Build.VERSION_CODES.N)
     fun appendExpression(string: String){
         if (toggle) {
-            et_amount.append(string)
+            if(et_amount.length()<15){
+                et_amount.append(string)
+            }else{
+                clear()
+            }
+
         } else {
-            et_split.append(string)
+            if(et_split.length()<15){
+                et_split.append(string)
+            }else{
+                clear()
+            }
+
         }
     }
 
@@ -85,7 +96,8 @@ class MainActivity : AppCompatActivity() {
         et_amount.setOnClickListener { set_Toggle(true) }
         et_split.setOnClickListener { set_Toggle(false)
         }
-        textViewClear.setOnClickListener {clear()}
+        textViewClear.setOnClickListener {clear()
+            textViewClear.performHapticFeedback(1,3)}
         sb_percent.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(sb_percent: SeekBar, i: Int, b: Boolean) {
                 tv_precent.text =  "$i%"
@@ -100,20 +112,31 @@ class MainActivity : AppCompatActivity() {
             }
         })
         //On click functions of all the buttons
-        textView1.setOnClickListener{appendExpression("1")}
-        textView2.setOnClickListener{appendExpression("2")}
-        textView3.setOnClickListener{appendExpression("3")}
-        textView4.setOnClickListener{appendExpression("4")}
-        textView5.setOnClickListener{appendExpression("5")}
-        textView6.setOnClickListener{appendExpression("6")}
-        textView7.setOnClickListener{appendExpression("7")}
-        textView8.setOnClickListener{appendExpression("8")}
-        textView9.setOnClickListener{appendExpression("9")}
-        textView0.setOnClickListener{appendExpression("0")}
+        textView1.setOnClickListener{appendExpression("1")
+        textView1.performHapticFeedback(1,3)}
+        textView2.setOnClickListener{appendExpression("2")
+            textView2.performHapticFeedback(1,3)}
+        textView3.setOnClickListener{appendExpression("3")
+            textView3.performHapticFeedback(1,3)}
+        textView4.setOnClickListener{appendExpression("4")
+            textView4.performHapticFeedback(1,3)}
+        textView5.setOnClickListener{appendExpression("5")
+            textView5.performHapticFeedback(1,3)}
+        textView6.setOnClickListener{appendExpression("6")
+            textView6.performHapticFeedback(1,3)}
+        textView7.setOnClickListener{appendExpression("7")
+            textView7.performHapticFeedback(1,3)}
+        textView8.setOnClickListener{appendExpression("8")
+            textView8.performHapticFeedback(1,3)}
+        textView9.setOnClickListener{appendExpression("9")
+            textView9.performHapticFeedback(1,3)}
+        textView0.setOnClickListener{appendExpression("0")
+            textView0.performHapticFeedback(1,3)}
         //Does not allow user to enter 2 decimals in one number
         textViewdot.setOnClickListener{
             if(!et_amount.text.contains(".")){
-                appendExpression(".") }
+                appendExpression(".")
+                textViewdot.performHapticFeedback(1,3)}
         }
 
         textViewback.setOnClickListener{
@@ -130,7 +153,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        textViewCalculate.setOnClickListener {calculate()}
+        textViewCalculate.setOnClickListener {calculate()
+            textViewCalculate.performHapticFeedback(1,3)}
 
     }
 }
